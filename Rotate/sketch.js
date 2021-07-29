@@ -134,6 +134,7 @@ function draw() {
   drawGrid();
 
   // Original Shape's Outline...
+  // 175^2 + 175^2 = X, sqrt(X) = ~248
   beginShape();
   //background(5);
   vertex(wide_half, 0);
@@ -151,9 +152,9 @@ function draw() {
   beginShape();
   //background(5);
   vertex(0, 175);
-  vertex(0, 350);
-  vertex(175, 350);
-  vertex(175, 175);
+  vertex(0, 175+248);
+  vertex(248, 175+248);
+  vertex(248, 175);
   vertex(0, 175);
   fill('black');
   //vertex(randX4, randY4);
@@ -266,15 +267,119 @@ function draw() {
     fill('orange');
     endShape();
     
-    // The shape duplicated 8 times, plus rotation or reflection effects...
+    // (If a 3 vertice shape is randomly selected)
+    // The shape is duplicated 8 times, plus rotation or reflection effects (randomly selected)...
     for (let num = 0; num < 8; num++) {
       if (num == 0) {
+
+
+        let test = calc_coords(1, 359);
+        console.log("test is:", test);
+        //for (let test = 0; test < 361; test++) {
         beginShape();
+        var degree = radians(test);
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
+
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
+
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
+
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
+
+
+        /*
+        var X1_abs = abs(0 - X1_new); // Takes absolute value of distance from zero.
+        var X2_abs = abs(0 - X2_new);
+        var X3_abs = abs(0 - X3_new);
+
+        console.log("X1_new: ", X1_new, " X1_abs: ", X1_abs);
+        console.log("X1_new: ", X2_new, " X1_abs: ", X2_abs);
+        console.log("X1_new: ", X3_new, " X1_abs: ", X3_abs);
+        
+        */
+        console.log("X1_new: ", X1_new);
+        console.log("X2_new: ", X2_new);
+        console.log("X3_new: ", X3_new);
+
+        console.log("Y1_new: ", Y1_new);
+        console.log("Y2_new: ", Y2_new);
+        console.log("Y3_new: ", Y3_new);
+
+        //const arr_abs = [X1_abs, X2_abs, X3_abs];
+        //const min = Math.min(...arr_abs);
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
+
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+        /*
+        for (let i = 0; i < arr_new.length; i++) {
+          if ((arr_abs[i]) == min) {
+            if (arr_new[i] < 0) {
+              vertice_add = min * -1;
+            } else if (arr_new[i] > 0) {
+              vertice_add = min * 1;
+            } else if (arr_new[i] == 0) {
+              vertice_add = min * 0;
+            } break; // Exit for loop. 
+          }
+        } */
+
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
+
+        /*
+        X1_new = abs(X1_new - vertice_add);
+        X2_new = abs(X2_new - vertice_add);
+        X3_new = abs(X3_new - vertice_add);
+        */
+
+        X1_new = (X1_new - vertice_add_X);
+        X2_new = (X2_new - vertice_add_X);
+        X3_new = (X3_new - vertice_add_X);
+
+        Y1_new = (Y1_new - vertice_add_Y);
+        Y2_new = (Y2_new - vertice_add_Y);
+        Y3_new = (Y3_new - vertice_add_Y);
+
+        vertex(X1_new, Y1_new + 175); console.log(X1_new); console.log(Y1_new);
+        vertex(X2_new, Y2_new + 175); console.log(X2_new); console.log(Y2_new);
+        vertex(X3_new, Y3_new + 175); console.log(X3_new); console.log(Y3_new);
+        // Makes vertices at origin, then pushes Y values to center of box. 
+        endShape();
+
+        console.log("Y values: ", Y1_new, Y2_new, Y3_new);
+/*
+        
+
+
+/*
         vertex(randX1, randY1 + 175);
         vertex(randX2, randY2 + 175);
         vertex(randX3, randY3 + 175);
         endShape();
-      } else if (num == 1) {
+        
+  */
+      } else if (num == 1) { // Shape number 1
         /*
         beginShape();
         vertex(randX1, randY1 + 525);
@@ -286,31 +391,64 @@ function draw() {
         
       
         let test = calc_coords(1, 359);
+        console.log("test is:", test);
         //for (let test = 0; test < 361; test++) {
         beginShape();
         var degree = radians(test);
-        var X1_new = (randX1 * cos(degree)) - ((randY1 + 525) * sin(degree));
-        var X2_new = (randX2 * cos(degree)) - ((randY2 + 525) * sin(degree));
-        var X3_new = (randX3 * cos(degree)) - ((randY3 + 525) * sin(degree));
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
 
-        var Y1_new = (randX1 * sin(degree)) + ((randY1 + 525) * cos(degree));
-        var Y2_new = (randX2 * sin(degree)) + ((randY2 + 525) * cos(degree));
-        var Y3_new = (randX3 * sin(degree)) + ((randY3 + 525) * cos(degree));
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
 
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
 
-        const arr_new = [X1_new, X2_new, X3_new];
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
         
+
+        /*
         var X1_abs = abs(0 - X1_new); // Takes absolute value of distance from zero.
         var X2_abs = abs(0 - X2_new);
         var X3_abs = abs(0 - X3_new);
+
         console.log("X1_new: ", X1_new, " X1_abs: ", X1_abs);
         console.log("X1_new: ", X2_new, " X1_abs: ", X2_abs);
         console.log("X1_new: ", X3_new, " X1_abs: ", X3_abs);
         
-        const arr_abs = [X1_abs, X2_abs, X3_abs];
-        const min = Math.min(...arr_abs);
+        */
+       console.log("X1_new: ", X1_new);
+       console.log("X2_new: ", X2_new);
+       console.log("X3_new: ", X3_new);
+        
+       console.log("Y1_new: ", Y1_new);
+       console.log("Y2_new: ", Y2_new);
+       console.log("Y3_new: ", Y3_new);
+        
+        //const arr_abs = [X1_abs, X2_abs, X3_abs];
+        //const min = Math.min(...arr_abs);
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
 
-        var vertice_add; // Number to add to vertices to match origin's x value. 
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+        /*
         for (let i = 0; i < arr_new.length; i++) {
           if ((arr_abs[i]) == min) {
             if (arr_new[i] < 0) {
@@ -321,17 +459,29 @@ function draw() {
               vertice_add = min * 0;
             } break; // Exit for loop. 
           }
-        }
+        } */
 
-        console.log("vertice_add: ", vertice_add);
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
 
+        /*
         X1_new = abs(X1_new - vertice_add);
         X2_new = abs(X2_new - vertice_add);
         X3_new = abs(X3_new - vertice_add);
+        */
 
-        vertex(X1_new, Y1_new); console.log(X1_new); 
-        vertex(X2_new, Y2_new); console.log(X2_new);
-        vertex(X3_new, Y3_new); console.log(X3_new);
+       X1_new = (X1_new - vertice_add_X);
+       X2_new = (X2_new - vertice_add_X);
+       X3_new = (X3_new - vertice_add_X);
+
+       Y1_new = (Y1_new - vertice_add_Y);
+       Y2_new = (Y2_new - vertice_add_Y);
+       Y3_new = (Y3_new - vertice_add_Y);
+       
+        vertex(X1_new , Y1_new + 525); console.log(X1_new); console.log(Y1_new);
+        vertex(X2_new , Y2_new + 525); console.log(X2_new); console.log(Y2_new);
+        vertex(X3_new , Y3_new + 525); console.log(X3_new); console.log(Y3_new);
+        // Makes vertices at origin, then pushes Y values to center of box. 
         endShape();
 
         console.log("Y values: ", Y1_new, Y2_new, Y3_new);
@@ -346,42 +496,394 @@ function draw() {
         //}
 
       } else if (num == 2) {
+
+
+        let test = calc_coords(1, 359);
+        console.log("test is:", test);
+        //for (let test = 0; test < 361; test++) {
         beginShape();
-        vertex(randX1 + wide_quarter, randY1 + 175);
-        vertex(randX2 + wide_quarter, randY2 + 175);
-        vertex(randX3 + wide_quarter, randY3 + 175);
+        var degree = radians(test);
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
+
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
+
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
+
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
+
+        console.log("X1_new: ", X1_new);
+        console.log("X2_new: ", X2_new);
+        console.log("X3_new: ", X3_new);
+
+        console.log("Y1_new: ", Y1_new);
+        console.log("Y2_new: ", Y2_new);
+        console.log("Y3_new: ", Y3_new);
+
+        //const arr_abs = [X1_abs, X2_abs, X3_abs];
+        //const min = Math.min(...arr_abs);
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
+
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+
+
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
+
+        X1_new = (X1_new - vertice_add_X);
+        X2_new = (X2_new - vertice_add_X);
+        X3_new = (X3_new - vertice_add_X);
+
+        Y1_new = (Y1_new - vertice_add_Y);
+        Y2_new = (Y2_new - vertice_add_Y);
+        Y3_new = (Y3_new - vertice_add_Y);
+
+        vertex(X1_new + wide_quarter, Y1_new + 175); console.log(X1_new); console.log(Y1_new);
+        vertex(X2_new + wide_quarter, Y2_new + 175); console.log(X2_new); console.log(Y2_new);
+        vertex(X3_new + wide_quarter, Y3_new + 175); console.log(X3_new); console.log(Y3_new);
+        // Makes vertices at origin, then pushes Y values to center of box. 
         endShape();
+
+        console.log("Y values: ", Y1_new, Y2_new, Y3_new);
+
+  
       } else if (num == 3) {
+
+        let test = calc_coords(1, 359);
+        console.log("test is:", test);
+        //for (let test = 0; test < 361; test++) {
         beginShape();
-        vertex(randX1 + wide_quarter, randY1 + 525);
-        vertex(randX2 + wide_quarter, randY2 + 525);
-        vertex(randX3 + wide_quarter, randY3 + 525);
+        var degree = radians(test);
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
+
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
+
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
+
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
+
+        console.log("X1_new: ", X1_new);
+        console.log("X2_new: ", X2_new);
+        console.log("X3_new: ", X3_new);
+
+        console.log("Y1_new: ", Y1_new);
+        console.log("Y2_new: ", Y2_new);
+        console.log("Y3_new: ", Y3_new);
+
+        //const arr_abs = [X1_abs, X2_abs, X3_abs];
+        //const min = Math.min(...arr_abs);
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
+
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+      
+
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
+
+        X1_new = (X1_new - vertice_add_X);
+        X2_new = (X2_new - vertice_add_X);
+        X3_new = (X3_new - vertice_add_X);
+
+        Y1_new = (Y1_new - vertice_add_Y);
+        Y2_new = (Y2_new - vertice_add_Y);
+        Y3_new = (Y3_new - vertice_add_Y);
+
+        vertex(X1_new + wide_quarter, Y1_new + 525); console.log(X1_new); console.log(Y1_new);
+        vertex(X2_new + wide_quarter, Y2_new + 525); console.log(X2_new); console.log(Y2_new);
+        vertex(X3_new + wide_quarter, Y3_new + 525); console.log(X3_new); console.log(Y3_new);
+        // Makes vertices at origin, then pushes Y values to center of box. 
         endShape();
-      } else if (num == 4) {
+
+        console.log("Y values: ", Y1_new, Y2_new, Y3_new);
+
+      } 
+      else if (num == 4) {
+
+        let test = calc_coords(1, 359);
+        console.log("test is:", test);
+        //for (let test = 0; test < 361; test++) {
         beginShape();
-        vertex(randX1, randY1 + 175);
-        vertex(randX2, randY2 + 175);
-        vertex(randX3, randY3 + 175);
+        var degree = radians(test);
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
+
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
+
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
+
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
+
+        console.log("X1_new: ", X1_new);
+        console.log("X2_new: ", X2_new);
+        console.log("X3_new: ", X3_new);
+
+        console.log("Y1_new: ", Y1_new);
+        console.log("Y2_new: ", Y2_new);
+        console.log("Y3_new: ", Y3_new);
+
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
+
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
+
+        X1_new = (X1_new - vertice_add_X);
+        X2_new = (X2_new - vertice_add_X);
+        X3_new = (X3_new - vertice_add_X);
+
+        Y1_new = (Y1_new - vertice_add_Y);
+        Y2_new = (Y2_new - vertice_add_Y);
+        Y3_new = (Y3_new - vertice_add_Y);
+        vertex((wide - 175) + X1_new, Y1_new + 175);
+        vertex((wide - 175) + X2_new, Y2_new + 175);
+        vertex((wide - 175) + X3_new, Y3_new + 175);
         endShape();
       } else if (num == 5) {
+
+        let test = calc_coords(1, 359);
+        console.log("test is:", test);
+        //for (let test = 0; test < 361; test++) {
         beginShape();
-        vertex(randX1, randY1 + 175);
-        vertex(randX2, randY2 + 175);
-        vertex(randX3, randY3 + 175);
-        endShape();
-      } else if (num == 6) {
-        beginShape();
-        vertex(randX1, randY1 + 175);
-        vertex(randX2, randY2 + 175);
-        vertex(randX3, randY3 + 175);
-        endShape();
-      } else if (num == 7) {
-        beginShape();
-        vertex(randX1, randY1 + 175);
-        vertex(randX2, randY2 + 175);
-        vertex(randX3, randY3 + 175);
+        var degree = radians(test);
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
+
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
+
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
+
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
+
+        console.log("X1_new: ", X1_new);
+        console.log("X2_new: ", X2_new);
+        console.log("X3_new: ", X3_new);
+
+        console.log("Y1_new: ", Y1_new);
+        console.log("Y2_new: ", Y2_new);
+        console.log("Y3_new: ", Y3_new);
+
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
+
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
+
+        X1_new = (X1_new - vertice_add_X);
+        X2_new = (X2_new - vertice_add_X);
+        X3_new = (X3_new - vertice_add_X);
+
+        Y1_new = (Y1_new - vertice_add_Y);
+        Y2_new = (Y2_new - vertice_add_Y);
+        Y3_new = (Y3_new - vertice_add_Y);
+        vertex((wide - 175) + X1_new, Y1_new + 525);
+        vertex((wide - 175) + X2_new, Y2_new + 525);
+        vertex((wide - 175) + X3_new, Y3_new + 525);
         endShape();
       }
+      else if (num == 6) {
+
+        let test = calc_coords(1, 359);
+        console.log("test is:", test);
+        //for (let test = 0; test < 361; test++) {
+        beginShape();
+        var degree = radians(test);
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
+
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
+
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
+
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
+
+        console.log("X1_new: ", X1_new);
+        console.log("X2_new: ", X2_new);
+        console.log("X3_new: ", X3_new);
+
+        console.log("Y1_new: ", Y1_new);
+        console.log("Y2_new: ", Y2_new);
+        console.log("Y3_new: ", Y3_new);
+
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
+
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
+
+        X1_new = (X1_new - vertice_add_X);
+        X2_new = (X2_new - vertice_add_X);
+        X3_new = (X3_new - vertice_add_X);
+
+        Y1_new = (Y1_new - vertice_add_Y);
+        Y2_new = (Y2_new - vertice_add_Y);
+        Y3_new = (Y3_new - vertice_add_Y);
+        vertex((wide - wide_quarter) - X1_new, Y1_new + 175);
+        vertex((wide - wide_quarter) - X2_new, Y2_new + 175);
+        vertex((wide - wide_quarter) - X3_new, Y3_new + 175);
+        endShape();
+      } else if (num == 7) {
+
+        let test = calc_coords(1, 359);
+        console.log("test is:", test);
+        //for (let test = 0; test < 361; test++) {
+        beginShape();
+        var degree = radians(test);
+        var X1_new = (randX1 * cos(degree)) - ((randY1) * sin(degree));
+        var X2_new = (randX2 * cos(degree)) - ((randY2) * sin(degree));
+        var X3_new = (randX3 * cos(degree)) - ((randY3) * sin(degree));
+
+        var Y1_new = (randX1 * sin(degree)) + ((randY1) * cos(degree));
+        var Y2_new = (randX2 * sin(degree)) + ((randY2) * cos(degree));
+        var Y3_new = (randX3 * sin(degree)) + ((randY3) * cos(degree));
+
+        var reflect = calc_coords(0, 1); // Random variable used to determine if shape will be reflected or not
+
+        if (reflect == 1) { // Reflect shape if reflect value == 1
+          X1_new *= -1;
+          X2_new *= -1;
+          X3_new *= -1;
+        } else { // Do not reflect shape if reflect value == 0
+          // 
+        }
+        console.log("reflect is: ", reflect);
+
+        const arr_new_X = [X1_new, X2_new, X3_new];
+        const arr_new_Y = [Y1_new, Y2_new, Y3_new];
+
+        console.log("X1_new: ", X1_new);
+        console.log("X2_new: ", X2_new);
+        console.log("X3_new: ", X3_new);
+
+        console.log("Y1_new: ", Y1_new);
+        console.log("Y2_new: ", Y2_new);
+        console.log("Y3_new: ", Y3_new);
+
+        const min_X = Math.min(...arr_new_X);
+        const min_Y = Math.min(...arr_new_Y);
+
+        var vertice_add_X; // Number to add to vertices to match origin's x value. 
+        var vertice_add_Y; // Number to add to vertices to match origin's y value. 
+
+        // added line:
+        vertice_add_X = min_X;
+        vertice_add_Y = min_Y;
+
+        console.log("vertice_add_X: ", vertice_add_X);
+        console.log("vertice_add_Y: ", vertice_add_Y);
+
+        X1_new = (X1_new - vertice_add_X);
+        X2_new = (X2_new - vertice_add_X);
+        X3_new = (X3_new - vertice_add_X);
+
+        Y1_new = (Y1_new - vertice_add_Y);
+        Y2_new = (Y2_new - vertice_add_Y);
+        Y3_new = (Y3_new - vertice_add_Y);
+        vertex((wide - wide_quarter) - X1_new, Y1_new + 525);
+        vertex((wide - wide_quarter) - X2_new, Y2_new + 525);
+        vertex((wide - wide_quarter) - X3_new, Y3_new + 525);
+        endShape();
+      } 
     }
 
 
