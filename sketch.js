@@ -3751,17 +3751,27 @@ function ResetButtonPress() {
   pressable_button_v8_7 = 0;
 }
 
+var page_number = 1;
+
 function MouseCoords(event) {
+  console.log("button_pressed_total", button_pressed_total);
 
   if (button_pressed == 1) {
+    page_number++;
     total_possible_score += 8; // Total Possible Score increases by 8.
     num_true = 0; num_false = 0;
     total_true = 0; total_false = 0;
     correct_choice = 0; incorrect_choice = 0;
     console.log("TOTAL POSS SCORE:", total_possible_score);
     console.log("TOTAL VERTICES:", vertices);
+    console.log("total_player_score:", total_player_score);
+    console.log("Page:", page_number);
     ResetButtonPress();
     button_pressed = 0;
+  }
+  if (page_number == 10) {
+    // Remove button when on the 10th page.
+    button.mousePressed(function () { button.remove() }) 
   }
 
   // Finds mouse coordinates on click:
@@ -4694,6 +4704,7 @@ function MouseCoords(event) {
 
 var num_mistakes;
 
+
 // Box in middle shows timer count down from 10 min
 
 document.addEventListener("click", MouseCoords);
@@ -4704,8 +4715,6 @@ var total_incorrect; // Tally them, then multiply -1
 var current_correct;
 
 function KeepScore() {
-
-  var high_num = (button_pressed_total * 8);
   // "high_num" is upper-limit of number of points.
 
   
@@ -4729,7 +4738,7 @@ function KeepScore() {
         num_false++;
       }
     } 
-     if ((total_true + total_false) < total_possible_score) {
+     if ((total_true + total_false) < 8) {
       total_true = num_true;
       total_false = num_false;
     }
@@ -4744,7 +4753,7 @@ function KeepScore() {
         num_false++;
       }
     } 
-     if ((total_true + total_false) < total_possible_score) {
+     if ((total_true + total_false) < 8) {
       total_true = num_true;
       total_false = num_false;
     }
@@ -4760,7 +4769,7 @@ function KeepScore() {
         num_false++;
       }
     } 
-     if ((total_true + total_false) < total_possible_score) {
+     if ((total_true + total_false) < 8) {
       total_true = num_true;
       total_false = num_false;
     }
@@ -4776,7 +4785,7 @@ function KeepScore() {
         num_false++;
       }
     } 
-     if ((total_true + total_false) < total_possible_score) {
+     if ((total_true + total_false) < 8) {
       total_true = num_true;
       total_false = num_false;
     }
@@ -4797,10 +4806,15 @@ function KeepScore() {
 
   // Current Player Score:
   //round_player_score = (total_possible_score - total_true) + correct_choice + incorrect_choice;
-  round_player_score = total_possible_score + num_mistakes;
+  round_player_score = 8 + num_mistakes;
   console.log("round_player_score", round_player_score);
 
 
+  // Tracks points per round and adds them to player's total points. 
+  if (button_pressed == 1) {
+    total_player_score += round_player_score;
+    round_player_score = 0;
+  }
 
 
 
@@ -4898,6 +4912,7 @@ function color_swap() {
 
 function resetup() {
   button_pressed_total++; // Total "next" button presses. 
+  console.log("button_pressed_total", button_pressed_total);
 
   //vertices = calc_coords(5, 8);
   vertices = 5;
@@ -4905,7 +4920,7 @@ function resetup() {
 
   color_swap();
 
-  total_player_score += round_player_score; // ??? Check
+  //total_player_score += round_player_score; // ??? Check
 
 
   console.log("HELLOO total_player_score", total_player_score);
